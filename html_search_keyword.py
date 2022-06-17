@@ -41,7 +41,6 @@ def extract_text_to_list(bs_object):
         lst_of_text = []
         for item in bs_content:
             lst_of_text+=html_to_text(item, ["p","table"])
-        return lst_of_text
     except:
         try:
             bs_content = bs_object.find('sec-document').find("document").find("type").find("sequence").find("filename").find("description").find("text")
@@ -53,9 +52,22 @@ def extract_text_to_list(bs_object):
                 print("File could not be parsed, skip.")
                 return
         lst_of_text = html_to_text(bs_content,["p","table","ul"])
-    if len(lst_of_text) == 0: 
-        # If still can't read anything, parsing problem
-        lst_of_text = html_to_text(bs_object,["p","table","ul"])
+    if len(lst_of_text) == 0:
+        # Try all other methods again.
+        try:
+            bs_content = bs_object.find('sec-document').find("document").find("type").find("sequence").find("filename").find("description").find("text")
+            lst_of_text = html_to_text(bs_content,["p","table","ul"])
+        except:
+            try:
+                # exception 1: structure is different from other files
+                bs_content = bs_object.find('sec-document').find("document").find("type").find("sequence").find("filename").find("text")
+                lst_of_text = html_to_text(bs_content,["p","table","ul"])
+            except:
+                print("File could not be parsed, skip.")
+                return
+        if len(lst_of_text) == 0:
+            # If still can't read anything, parsing problem
+            lst_of_text = html_to_text(bs_object,["p","table","ul"])
     return lst_of_text
 
 
