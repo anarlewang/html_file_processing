@@ -1,0 +1,5 @@
+Python Notebooks: 
+
+1. Industy Classificaiton: Reads all SEC filings for a given time period and obtains the SIC code and industry name. 
+2. Industry Analysis: Classifies the filing under 10 SIC divisions and presents an overview. 
+3. Top Industry Deep Dive: Presents the results at an industry level. 
